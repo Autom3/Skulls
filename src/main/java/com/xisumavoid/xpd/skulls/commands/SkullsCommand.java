@@ -4,6 +4,7 @@ import com.xisumavoid.xpd.skulls.Skulls;
 import com.xisumavoid.xpd.skulls.utils.IconMenu;
 import com.xisumavoid.xpd.skulls.utils.IconMenu.OptionClickEventHandler;
 import java.util.UUID;
+import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -16,6 +17,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.json.JSONArray;
+import org.json.JSONException;
 
 /**
  *
@@ -84,7 +86,15 @@ public class SkullsCommand implements CommandExecutor {
                                 event.getPlayer().sendMessage(ChatColor.GREEN + "Here's the skull");
                             }
                         });
-                        JSONArray jsonArray = plugin.getSkullsUtils().fromUrl("http://heads.freshcoal.com/api.php?query=" + args[1]);
+                        JSONArray jsonArray = null;
+                        try {
+                            jsonArray = plugin.getSkullsUtils().fromUrl(StringEscapeUtils.escapeHtml("http://heads.freshcoal.com/api.php?query=" + StringUtils.join(args, "%20", 1, args.length)));
+                        } catch (JSONException e) {
+                        }
+                        if (jsonArray == null) {
+                            player.sendMessage(ChatColor.RED + "Unable to find anything");
+                            return true;
+                        }
                         for (int i = 0; i < Math.min(jsonArray.length(), 54); i++) {
                             String name = jsonArray.getJSONObject(i).getString("name");
                             UUID skullOwner = UUID.fromString(jsonArray.getJSONObject(i).getString("skullowner"));
