@@ -1,6 +1,9 @@
 package com.xisumavoid.xpd.skulls.commands;
 
 import com.xisumavoid.xpd.skulls.Skulls;
+import com.xisumavoid.xpd.skulls.utils.IconMenu;
+import com.xisumavoid.xpd.skulls.utils.IconMenu.OptionClickEventHandler;
+import java.util.UUID;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -12,6 +15,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
+import org.json.JSONArray;
 
 /**
  *
@@ -64,6 +68,33 @@ public class SkullsCommand implements CommandExecutor {
             }
 
             if (args.length > 0) {
+                if (args.length > 1 && args[0].equalsIgnoreCase("search") && player.hasPermission("skulls.search")) {
+                    if (player.hasPermission("skulls.searchapi")) {
+                        if (args[1].length() < 3) {
+                            player.sendMessage(ChatColor.RED + "Use at least 3 characters");
+                            return true;
+                        }
+                        IconMenu menu = new IconMenu("Pick a skull", 54, plugin, new OptionClickEventHandler() {
+
+                            @Override
+                            public void onOptionClick(IconMenu.OptionClickEvent event) {
+                                event.setWillClose(true);
+                                event.setWillDestroy(true);
+                                event.getPlayer().getInventory().addItem(event.getItem());
+                                event.getPlayer().sendMessage(ChatColor.GREEN + "Here's the skull");
+                            }
+                        });
+                        JSONArray jsonArray = plugin.getSkullsUtils().fromUrl("http://heads.freshcoal.com/api.php?query=" + args[1]);
+                        for (int i = 0; i < Math.min(jsonArray.length(), 54); i++) {
+                            String name = jsonArray.getJSONObject(i).getString("name");
+                            UUID skullOwner = UUID.fromString(jsonArray.getJSONObject(i).getString("skullowner"));
+                            String value = jsonArray.getJSONObject(i).getString("value");
+                            menu.setOption(i, plugin.getSkullsUtils().createSkull(name, value, skullOwner), name, "");
+                        }
+                        menu.open(player);
+                    }
+                    return true;
+                }
                 if (args[0].equalsIgnoreCase("categories")) {
                     sendCategories(sender);
                     return true;

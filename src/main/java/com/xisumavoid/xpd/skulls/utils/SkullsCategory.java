@@ -1,6 +1,7 @@
 package com.xisumavoid.xpd.skulls.utils;
 
 import com.xisumavoid.xpd.skulls.Skulls;
+import com.xisumavoid.xpd.skulls.utils.IconMenu.OptionClickEventHandler;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -60,7 +61,7 @@ public class SkullsCategory {
             if (menuName.length() > 32) {
                 menuName = menuName.substring(0, 31);
             }
-            IconMenu iconMenu = new IconMenu(menuName, (rowsPerPage + 1) * 9, plugin, new IconMenu.OptionClickEventHandler() {
+            IconMenu iconMenu = new IconMenu(menuName, (rowsPerPage + 1) * 9, plugin, new OptionClickEventHandler() {
 
                 @Override
                 public void onOptionClick(final IconMenu.OptionClickEvent event) {
