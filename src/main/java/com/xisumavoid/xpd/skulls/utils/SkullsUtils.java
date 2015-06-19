@@ -1,6 +1,18 @@
 package com.xisumavoid.xpd.skulls.utils;
 
 import com.xisumavoid.xpd.skulls.Skulls;
+import net.minecraft.server.v1_8_R3.NBTTagCompound;
+import net.minecraft.server.v1_8_R3.NBTTagList;
+import org.apache.commons.io.IOUtils;
+import org.bukkit.Bukkit;
+import org.bukkit.Material;
+import org.bukkit.SkullType;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.craftbukkit.v1_8_R3.inventory.CraftItemStack;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.SkullMeta;
+import org.json.JSONArray;
+
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -8,17 +20,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
-import net.minecraft.server.v1_8_R2.NBTTagCompound;
-import net.minecraft.server.v1_8_R2.NBTTagList;
-import org.apache.commons.io.IOUtils;
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
-import org.bukkit.SkullType;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.craftbukkit.v1_8_R2.inventory.CraftItemStack;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.SkullMeta;
-import org.json.JSONArray;
 
 /**
  *
@@ -64,7 +65,7 @@ public class SkullsUtils {
     }
 
     public ItemStack createSkull(String name, String value, UUID owner) {
-        net.minecraft.server.v1_8_R2.ItemStack nmsStack = new net.minecraft.server.v1_8_R2.ItemStack(net.minecraft.server.v1_8_R2.Items.SKULL, 1, 3);
+        net.minecraft.server.v1_8_R3.ItemStack nmsStack = new net.minecraft.server.v1_8_R3.ItemStack(net.minecraft.server.v1_8_R3.Items.SKULL, 1, 3);
         nmsStack.setTag(new NBTTagCompound());
         NBTTagCompound displayTag = new NBTTagCompound();
         NBTTagCompound entryTag = new NBTTagCompound();
